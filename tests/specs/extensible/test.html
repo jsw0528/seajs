@@ -9,13 +9,8 @@
 <body>
 <div id="out"></div>
 <script>
-  seajs.use('../../test', function(test) {
-    test.run([
-      'specs/extensible/auto-transport',
-      'specs/extensible/combo-map',
-      'specs/extensible/compiling-module',
-      'specs/extensible/module-constructor'
-    ])
+  seajs.use(['../../test', './meta'], function(test, data) {
+    test.run(data)
   })
 </script>
 </body>

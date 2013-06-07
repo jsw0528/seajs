@@ -6,6 +6,7 @@
 <title>test</title>
 <script>
   var global = this
+  var _seajs = {}
 </script>
 <script src="../../../src/sea.js"></script>
 
@@ -18,15 +19,15 @@
 
 <script src="../../../src/module.js"></script>
 <script src="../../../src/config.js"></script>
-<script src="../../../src/bootstrap.js"></script>
 </head>
 <body>
 <div id="out"></div>
 <script>
   seajs.use('../../test', function(test) {
     test.run([
-      'specs/util/events.js',
-      'specs/util/path.js'
+      'events.js',
+      'log.js',
+      'path.js'
     ])
   })
 </script>

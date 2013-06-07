@@ -2,15 +2,12 @@
  * util-events.js - The minimal events support
  */
 
-var eventsCache = {}
+var eventsCache = seajs.events = {}
 
 // Bind event
 seajs.on = function(event, callback) {
-  if (!callback) return seajs
-
   var list = eventsCache[event] || (eventsCache[event] = [])
   list.push(callback)
-
   return seajs
 }
 
@@ -20,7 +17,7 @@ seajs.on = function(event, callback) {
 seajs.off = function(event, callback) {
   // Remove *all* events
   if (!(event || callback)) {
-    eventsCache = {}
+    seajs.events = eventsCache = {}
     return seajs
   }
 
@@ -43,33 +40,19 @@ seajs.off = function(event, callback) {
 
 // Emit event, firing all bound callbacks. Callbacks are passed the same
 // arguments as `emit` is, apart from the event name
-var emit = seajs.emit = function(event) {
-  var list = eventsCache[event]
-  if (!list) return seajs
+var emit = seajs.emit = function(event, data) {
+  var list = eventsCache[event], fn
 
-  var args = []
+  if (list) {
+    // Copy callback lists to prevent modification
+    list = list.slice()
 
-  // Fill up `args` with the callback arguments.  Since we're only copying
-  // the tail of `arguments`, a loop is much faster than Array#slice
-  for (var i = 1, len = arguments.length; i < len; i++) {
-    args[i - 1] = arguments[i]
+    // Execute event callbacks
+    while ((fn = list.shift())) {
+      fn(data)
+    }
   }
-
-  // Copy callback lists to prevent modification
-  list = list.slice()
-
-  // Execute event callbacks
-  forEach(list, function(fn) {
-    fn.apply(global, args)
-  })
 
   return seajs
 }
-
-// Emit event and return the specified property of the data
-function emitData(event, data, prop) {
-  emit(event, data)
-  return data[prop || keys(data)[0]]
-}
-
 

@@ -10,7 +10,6 @@ seajs.config({
 define(function(require) {
 
   var test = require('../../../test')
-  var global = this
 
   var a = require('a')
   var b = require('biz/b')
@@ -26,8 +25,8 @@ define(function(require) {
     }
   })
 
-  var consoleMsg = global.consoleMsg
-  test.assert(consoleMsg === 'The config of alias["a"] is changed from "./path/to/a.js" to "x"', consoleMsg)
+  //var consoleMsg = global.consoleMsgStack.pop()
+  //test.assert(consoleMsg === 'The config of alias["a"] is changed from "./path/to/a.js" to "x"', consoleMsg)
 
   require.async('c', function(c) {
     test.assert(c.name === 'c', c.name)
