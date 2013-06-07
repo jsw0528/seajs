@@ -1,16 +1,25 @@
 
 build:
-	ant -buildfile tools/build.xml
+	@grunt
+	@$(MAKE) size
 
 build_all:
-	ant -buildfile tools/build.xml build_seajs
-	ant -buildfile tools/build.xml build_plugins
+	@grunt all
+	@$(MAKE) size
 
-test:
-	phantomjs tools/phantom.js http://localhost/~lifesinger/seajs/seajs/tests/runner.html?console
+test: test_node test_local test_http
 
 test_node:
-	node tests/runner.js
+	@node tests/node-runner.js
+
+test_local:
+	@phantomjs tools/phantom.js tests/runner.html?console
+
+test_http:
+	@node tools/server.js tests/runner.html?console
+
+totoro:
+	@totoro --adapter=tests/totoro-adapter.js
 
 size:
-	tools/size.sh
+	@tools/size.sh

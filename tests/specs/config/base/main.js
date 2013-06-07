@@ -27,10 +27,16 @@ define(function(require) {
   })
 
   function expectedPath(str) {
+    if (typeof process !== 'undefined') {
+      return '/root-path/' + str + '.js'
+    }
+
     return location.protocol + '//' + location.host + '/root-path/' + str + '.js'
   }
 
-  test.assert(require.resolve('z') === expectedPath('z'), require.resolve('z'))
+  test.assert(require.resolve('z') === expectedPath('z'),
+      'actual = ' + require.resolve('z')
+          + ' expected = ' + expectedPath('z'))
 
 
   // rare but allowed case
@@ -39,7 +45,11 @@ define(function(require) {
   })
 
   base = seajs.config.data.base
-  test.assert(location.href.indexOf(base) === 0, base)
+  var href = (global.location || {}).href
+
+  test.assert(!href || // For Node.js
+      href.indexOf('file://') === 0 ||
+      href.indexOf(base) === 0, base)
 
 
   test.next()

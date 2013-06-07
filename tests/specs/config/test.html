@@ -9,17 +9,8 @@
 <body>
 <div id="out"></div>
 <script>
-  seajs.use('../../test', function(test) {
-    test.run([
-      'specs/config/alias',
-      'specs/config/base',
-      'specs/config/charset',
-      'specs/config/debug',
-      'specs/config/map',
-      'specs/config/preload',
-      'specs/config/vars',
-      'specs/config/hasOwnProperty'
-    ])
+  seajs.use(['../../test', './meta'], function(test, data) {
+    test.run(data)
   })
 </script>
 </body>
